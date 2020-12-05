@@ -15,27 +15,26 @@ namespace BackAction
         private double _param1 = 0;
         private double _param2 = 0;
 
-        private string _path;
         public MainWindow()
         {
             InitializeComponent();
 
             var users = new List<Param>();
             users.Add(new Param() { Name = "M", Rozmir = "*10^-27 кг" });
-            users.Add(new Param() { Name = "\x03C9 с", Rozmir = "*10^9 Гц" });
-            users.Add(new Param() { Name = "n", Rozmir = "" });
-            users.Add(new Param() { Name = "\x03B4(\x03C9 c - \x03C9 q) с", Rozmir = "" });
-            users.Add(new Param() { Name = "\x03B4 с", Rozmir = "" });
-            users.Add(new Param() { Name = "\x03C5", Rozmir = "*10^9 Гц" });
+            users.Add(new Param() { Name = "\x03C5", Rozmir = "*10^9 Гц" }); 
+            users.Add(new Param() { Name = "\x03C9с", Rozmir = "*10^9 Гц" });
             users.Add(new Param() { Name = "fq", Rozmir = "*10^9 Гц" });
+            users.Add(new Param() { Name = "n", Rozmir = "" });
             users.Add(new Param() { Name = "Tm", Rozmir = "*10^-9 c" });
-            users.Add(new Param() { Name = "c", Rozmir = "*10^8 м/с" });
+            users.Add(new Param() { Name = "\x03B4(\x03C9c - \x03C9q)", Rozmir = "" });
+            users.Add(new Param() { Name = "c", Rozmir = "*10^8 м/с" }); 
+            users.Add(new Param() { Name = "\x03B4n", Rozmir = "" });
             users.Add(new Param() { Name = "N", Rozmir = "" });
 
             dgUsers.ItemsSource = users;
 
             rezultParam1.Content = string.Concat("SFF = ", " (Вт/Гц)");
-            rezultParam2.Content = string.Concat("F = ", " (Н(м/с^2)^3)");
+            rezultParam2.Content = string.Concat("F = ", " (Дж)");
         }
 
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
@@ -93,19 +92,17 @@ namespace BackAction
         }
 
         private void makeClaculations(object sender, RoutedEventArgs e)
-        {
-            
-            MessageBox.Show(((Param)dgUsers.Items.GetItemAt(1)).Value.ToString());
-            double obMass = ((Param)dgUsers.Items.GetItemAt(0)).Value;    //(double)(xlRange.Cells[1, 1] as Excel.Range).Value;
+        { 
+            double obMass = ((Param)dgUsers.Items.GetItemAt(0)).Value;
             double obFrequn = ((Param)dgUsers.Items.GetItemAt(1)).Value;
             double cavResFrequn = ((Param)dgUsers.Items.GetItemAt(2)).Value;
-            double photonNum = ((Param)dgUsers.Items.GetItemAt(3)).Value;
-            double phaseNoise = ((Param)dgUsers.Items.GetItemAt(4)).Value;
-            double prTransFreq = ((Param)dgUsers.Items.GetItemAt(5)).Value;
-            double lightSpeed = ((Param)dgUsers.Items.GetItemAt(6)).Value;
-            double measurTime = ((Param)dgUsers.Items.GetItemAt(7)).Value;
-            double measurNum = ((Param)dgUsers.Items.GetItemAt(8)).Value;
-            double photonNumFluct = ((Param)dgUsers.Items.GetItemAt(9)).Value;
+            double prTransFreq = ((Param)dgUsers.Items.GetItemAt(3)).Value;
+            double photonNum = ((Param)dgUsers.Items.GetItemAt(4)).Value;
+            double measurTime = ((Param)dgUsers.Items.GetItemAt(5)).Value;
+            double phaseNoise = ((Param)dgUsers.Items.GetItemAt(6)).Value;
+            double lightSpeed = ((Param)dgUsers.Items.GetItemAt(7)).Value;
+            double photonNumFluct = ((Param)dgUsers.Items.GetItemAt(8)).Value;
+            double measurNum = ((Param)dgUsers.Items.GetItemAt(9)).Value;
 
             _param1 = Calculation.spectrum(obMass, obFrequn, cavResFrequn, photonNum,
                 phaseNoise, prTransFreq, lightSpeed, measurTime, measurNum) * 10e-14;
@@ -115,7 +112,5 @@ namespace BackAction
             rezultParam1.Content = string.Concat("SFF = ", _param1.ToString(), " (Вт/Гц)");
             rezultParam2.Content = string.Concat("F = ", _param2.ToString(), " (Н(м/с^2)^3)");
         }
-        }
     }
-/*        
-*/
+}
