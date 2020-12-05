@@ -8,7 +8,12 @@ namespace BackAction
 {
     public static class Calculation
     {
+        // Стала Планка
         const double redPc = 1.054571817E-34;
+
+        /// <summary>
+        /// Розрахунок спектруму
+        /// </summary>
         public static double spectrum(double obMass, double obFrequn, double cavResFrequn, double photonNum, 
             double phaseNoise, double prTransFreq, double lightSpeed, double measurTime, double measurNum, double photonNumFluct = 1)
         {

@@ -35,6 +35,9 @@ namespace BackAction
             rezultParam2.Content = string.Concat("F = ", " (Дж)");
         }
 
+        /// <summary>
+        /// Кнопка для збереження файлу в exel
+        /// </summary>
         private void btnOpenFile_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -85,6 +88,9 @@ namespace BackAction
             }
         }
 
+        /// <summary>
+        /// Кнопка для виконання розрахунків
+        /// </summary>
         private void makeClaculations(object sender, RoutedEventArgs e)
         { 
             double obMass = ((Param)paramsGrid.Items.GetItemAt(0)).Value;
