@@ -1,8 +1,6 @@
-﻿using Microsoft.Office.Interop.Excel;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using Excel = Microsoft.Office.Interop.Excel;
 namespace BackAction
@@ -31,7 +29,7 @@ namespace BackAction
             users.Add(new Param() { Name = "\x03B4n", Rozmir = "" });
             users.Add(new Param() { Name = "N", Rozmir = "" });
 
-            dgUsers.ItemsSource = users;
+            paramsGrid.ItemsSource = users;
 
             rezultParam1.Content = string.Concat("SFF = ", " (Вт/Гц)");
             rezultParam2.Content = string.Concat("F = ", " (Дж)");
@@ -43,9 +41,7 @@ namespace BackAction
             saveFileDialog.Filter = "Execl files (*.xlsx)|*.xlsx";
             saveFileDialog.FilterIndex = 0;
             saveFileDialog.RestoreDirectory = true;
-            //saveFileDialog.CreatePrompt = true;
             saveFileDialog.Title = "Export Excel File To";
-            
 
             if (saveFileDialog.ShowDialog() == true)
             {
@@ -58,26 +54,25 @@ namespace BackAction
                         return;
                     }
 
-
                     var workBook = excelApp.Workbooks.Add();
                     var workSheet = workBook.Worksheets.get_Item(1);
 
-                    int i;
-                    for (i = 1; i < dgUsers.Items.Count; i++)
+                    int rowWorkSheet;
+                    for (rowWorkSheet = 1; rowWorkSheet <= paramsGrid.Items.Count; rowWorkSheet++)
                     {
-                        workSheet.Cells[i, 1] = ((Param)dgUsers.Items.GetItemAt(i)).Name;
-                        workSheet.Cells[i, 2] = ((Param)dgUsers.Items.GetItemAt(i)).Value;
-                        workSheet.Cells[i, 3] = ((Param)dgUsers.Items.GetItemAt(i)).Rozmir;
+                        workSheet.Cells[rowWorkSheet, 1] = ((Param)paramsGrid.Items.GetItemAt(rowWorkSheet-1)).Name;
+                        workSheet.Cells[rowWorkSheet, 2] = ((Param)paramsGrid.Items.GetItemAt(rowWorkSheet-1)).Value;
+                        workSheet.Cells[rowWorkSheet, 3] = ((Param)paramsGrid.Items.GetItemAt(rowWorkSheet-1)).Rozmir;
                     }
-                    i++;
-                    workSheet.Cells[i, 1] = "SFF";
-                    workSheet.Cells[i, 2] = _param1;
-                    workSheet.Cells[i, 3] = "Вт/Гц";
+                    rowWorkSheet++;
+                    workSheet.Cells[rowWorkSheet, 1] = "SFF";
+                    workSheet.Cells[rowWorkSheet, 2] = _param1;
+                    workSheet.Cells[rowWorkSheet, 3] = "Вт/Гц";
 
-                    i++;
-                    workSheet.Cells[i, 1] = "F";
-                    workSheet.Cells[i, 2] = _param2;
-                    workSheet.Cells[i, 3] = "Н(м/с^2)^3";
+                    rowWorkSheet++;
+                    workSheet.Cells[rowWorkSheet, 1] = "F";
+                    workSheet.Cells[rowWorkSheet, 2] = _param2;
+                    workSheet.Cells[rowWorkSheet, 3] = "Дж";
 
                     workBook.SaveAs(saveFileDialog.FileName);
                     workBook.Close();
@@ -87,22 +82,21 @@ namespace BackAction
                 {
                     MessageBox.Show(ex.ToString());
                 }
-
             }
         }
 
         private void makeClaculations(object sender, RoutedEventArgs e)
         { 
-            double obMass = ((Param)dgUsers.Items.GetItemAt(0)).Value;
-            double obFrequn = ((Param)dgUsers.Items.GetItemAt(1)).Value;
-            double cavResFrequn = ((Param)dgUsers.Items.GetItemAt(2)).Value;
-            double prTransFreq = ((Param)dgUsers.Items.GetItemAt(3)).Value;
-            double photonNum = ((Param)dgUsers.Items.GetItemAt(4)).Value;
-            double measurTime = ((Param)dgUsers.Items.GetItemAt(5)).Value;
-            double phaseNoise = ((Param)dgUsers.Items.GetItemAt(6)).Value;
-            double lightSpeed = ((Param)dgUsers.Items.GetItemAt(7)).Value;
-            double photonNumFluct = ((Param)dgUsers.Items.GetItemAt(8)).Value;
-            double measurNum = ((Param)dgUsers.Items.GetItemAt(9)).Value;
+            double obMass = ((Param)paramsGrid.Items.GetItemAt(0)).Value;
+            double obFrequn = ((Param)paramsGrid.Items.GetItemAt(1)).Value;
+            double cavResFrequn = ((Param)paramsGrid.Items.GetItemAt(2)).Value;
+            double prTransFreq = ((Param)paramsGrid.Items.GetItemAt(3)).Value;
+            double photonNum = ((Param)paramsGrid.Items.GetItemAt(4)).Value;
+            double measurTime = ((Param)paramsGrid.Items.GetItemAt(5)).Value;
+            double phaseNoise = ((Param)paramsGrid.Items.GetItemAt(6)).Value;
+            double lightSpeed = ((Param)paramsGrid.Items.GetItemAt(7)).Value;
+            double photonNumFluct = ((Param)paramsGrid.Items.GetItemAt(8)).Value;
+            double measurNum = ((Param)paramsGrid.Items.GetItemAt(9)).Value;
 
             _param1 = Calculation.spectrum(obMass, obFrequn, cavResFrequn, photonNum,
                 phaseNoise, prTransFreq, lightSpeed, measurTime, measurNum) * 10e-14;
@@ -110,7 +104,7 @@ namespace BackAction
                 phaseNoise, prTransFreq, lightSpeed, measurTime, measurNum, photonNumFluct) * 10e-16;
 
             rezultParam1.Content = string.Concat("SFF = ", _param1.ToString(), " (Вт/Гц)");
-            rezultParam2.Content = string.Concat("F = ", _param2.ToString(), " (Н(м/с^2)^3)");
+            rezultParam2.Content = string.Concat("F = ", _param2.ToString(), " (Дж)");
         }
     }
 }

@@ -12,7 +12,8 @@ namespace BackAction
         public static double spectrum(double obMass, double obFrequn, double cavResFrequn, double photonNum, 
             double phaseNoise, double prTransFreq, double lightSpeed, double measurTime, double measurNum, double photonNumFluct = 1)
         {
-            double numerator = Math.Pow(redPc, 3) / (4 * Math.PI * obMass * obFrequn);
+            double numerator = Math.Pow(redPc, 3);
+            numerator = numerator / (4 * Math.PI * obMass * obFrequn);
             numerator = (Math.Sqrt(numerator) * lightSpeed * cavResFrequn) / measurTime * photonNumFluct;
             numerator = Math.Pow(numerator, 2);
 

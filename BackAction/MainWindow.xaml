@@ -17,7 +17,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <DataGrid Grid.Row = "0" Grid.Column="0" Grid.ColumnSpan="2" Name="dgUsers" AutoGenerateColumns="False" CanUserAddRows="False" 
+        <DataGrid Grid.Row = "0" Grid.Column="0" Grid.ColumnSpan="2" Name="paramsGrid" AutoGenerateColumns="False" CanUserAddRows="False" 
                   CanUserDeleteRows="False" CanUserReorderColumns="False" CanUserSortColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Найменування зміної" Binding="{Binding Name}" IsReadOnly="True"/>
